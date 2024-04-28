@@ -18,13 +18,13 @@ if TYPE_CHECKING:
 pio.templates.default = "plotly_white"
 
 
-__author__ = "Janosh Riebesell"
-__date__ = "2022-07-21"
-__email__ = "janosh@lbl.gov"
+__author__ = "Your Name"
+__date__ = "2023-06-09"
+__email__ = "your.email@example.com"
 
 """
 Run this app with:
-    python crystal_toolkit/apps/examples/tsne_structure_on_hover.py
+    python script_name.py
 """
 
 
@@ -32,30 +32,35 @@ df = pd.read_pickle("/workspaces/fm/fm/notebooks/webpage/df.pkl")
 # print(df)
 
 plot_labels = {
-    "dataset": "Dataset",
-    "x": "t-SNE Dimension 1",
-    "y": "t-SNE Dimension 2",
+    "dataset_name": "Dataset",
+    "subset": "Subset",
 }
 
 fig_tsne = px.scatter(
     df,
     x="x",
     y="y",
-    color="dataset",
+    color="dataset_name",
     labels=plot_labels,
-    hover_name="dataset",
+    hover_name="dataset_full_name",
+    hover_data=["subset", "description", "url"],
 )
-title = "t-SNE Projection of GNN Embeddings"
+title = "t-SNE of JMP Embeddings"
 fig_tsne.update_layout(
     title=dict(text=f"<b>{title}</b>", x=0.5, font_size=20),
     legend=dict(x=1, y=1, xanchor="right"),
     margin=dict(b=20, l=40, r=20, t=100),
 )
-# slightly increase scatter point size (lower sizeref means larger)
-fig_tsne.update_traces(marker_sizeref=0.05, selector=dict(mode="markers"))
 
 
-structure_component = ctc.StructureMoleculeComponent(id="structure")
+structure_component = ctc.StructureMoleculeComponent(
+    id="structure",
+    bonded_sites_outside_unit_cell=True,
+    hide_incomplete_bonds=False,
+    scene_settings=dict(
+        unit_cell=False,
+    ),
+)
 
 app = dash.Dash(prevent_initial_callbacks=True, assets_folder=SETTINGS.ASSETS_PATH)
 graph = dcc.Graph(
@@ -92,11 +97,11 @@ graph_structure_div = html.Div(
     ],
     style=dict(display="flex", gap="2em", margin="2em 0"),
 )
-table = get_data_table(
-    df.drop(columns="structure").reset_index(), id="data-table", virtualized=False
-)
+# table = get_data_table(
+#     df.drop(columns="structure").reset_index(), id="data-table", virtualized=False
+# )
 app.layout = html.Div(
-    [hover_click_dropdown, graph_structure_div, table],
+    [hover_click_dropdown, graph_structure_div],
     style=dict(margin="2em", padding="1em"),
 )
 ctc.register_crystal_toolkit(app=app, layout=app.layout)
@@ -105,7 +110,7 @@ ctc.register_crystal_toolkit(app=app, layout=app.layout)
 @app.callback(
     Output(structure_component.id(), "data"),
     Output(struct_title, "children"),
-    Output(table, "style_data_conditional"),
+    # Output(table, "style_data_conditional"),
     Input(graph, "hoverData"),
     Input(graph, "clickData"),
     State(hover_click_dd, "value"),
@@ -126,19 +131,29 @@ def update_structure(
     # hover_data and click_data are identical since a hover event always precedes a click so
     # we always use hover_data
     data = hover_data["points"][0]
-    material_id = data["pointIndex"]
 
-    structure = df.structure[material_id]
-    dataset = df.dataset[material_id]
+    # Get the row index of the material in the dataframe
+    curve_number = data.get("curveNumber", 0)
+    # Use the curve number as the index of the dataset
+    unique_dataset_list = list(df["dataset_name"].unique())
+    df_filtered = df[df["dataset_name"] == unique_dataset_list[curve_number]]
 
-    # highlight corresponding row in table
-    style_data_conditional = {
-        "if": {"row_index": material_id},
-        "backgroundColor": "#3D9970",
-        "color": "white",
-    }
+    # Now, get the corresponding row
+    point_idx = data.get("pointIndex", 0)
+    row = df_filtered.iloc[point_idx]
 
-    return structure, dataset, [style_data_conditional]
+    structure = row.structure
+    dataset = row.dataset_full_name
+    # print(material_id, dataset, hover_data)
+
+    # # highlight corresponding row in table
+    # style_data_conditional = {
+    #     "if": {"row_index": material_id},
+    #     "backgroundColor": "#3D9970",
+    #     "color": "white",
+    # }
+
+    return structure, dataset
 
 
 if __name__ == "__main__":
