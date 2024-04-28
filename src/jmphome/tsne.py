@@ -7,10 +7,9 @@ import dash
 import pandas as pd
 import plotly.express as px
 import plotly.io as pio
-from crystal_toolkit.helpers.utils import get_data_table
 from crystal_toolkit.settings import SETTINGS
 from dash import dcc, html
-from dash.dependencies import Input, Output, State
+from dash.dependencies import Input, Output
 
 if TYPE_CHECKING:
     from pymatgen.core import Structure
@@ -68,23 +67,23 @@ graph = dcc.Graph(
     figure=fig_tsne,
     style={"width": "90vh"},
 )
-hover_click_dd = dcc.Dropdown(
-    id="hover-click-dropdown",
-    options=["hover", "click"],
-    value="hover",
-    clearable=False,
-    style=dict(minWidth="5em"),
-)
-hover_click_dropdown = html.Div(
-    [html.Label("Update structure on:", style=dict(fontWeight="bold")), hover_click_dd],
-    style=dict(
-        display="flex",
-        placeContent="center",
-        placeItems="center",
-        gap="1em",
-        margin="1em",
-    ),
-)
+# hover_click_dd = dcc.Dropdown(
+#     id="hover-click-dropdown",
+#     options=["hover", "click"],
+#     value="hover",
+#     clearable=False,
+#     style=dict(minWidth="5em"),
+# )
+# hover_click_dropdown = html.Div(
+#     [html.Label("Update structure on:", style=dict(fontWeight="bold")), hover_click_dd],
+#     style=dict(
+#         display="flex",
+#         placeContent="center",
+#         placeItems="center",
+#         gap="1em",
+#         margin="1em",
+#     ),
+# )
 struct_title = html.H2(
     "Try hovering on a point in the plot to see its corresponding structure",
     id="struct-title",
@@ -101,7 +100,10 @@ graph_structure_div = html.Div(
 #     df.drop(columns="structure").reset_index(), id="data-table", virtualized=False
 # )
 app.layout = html.Div(
-    [hover_click_dropdown, graph_structure_div],
+    [
+        # hover_click_dropdown,
+        graph_structure_div,
+    ],
     style=dict(margin="2em", padding="1em"),
 )
 ctc.register_crystal_toolkit(app=app, layout=app.layout)
@@ -111,26 +113,26 @@ ctc.register_crystal_toolkit(app=app, layout=app.layout)
     Output(structure_component.id(), "data"),
     Output(struct_title, "children"),
     # Output(table, "style_data_conditional"),
-    Input(graph, "hoverData"),
+    # Input(graph, "hoverData"),
     Input(graph, "clickData"),
-    State(hover_click_dd, "value"),
+    # State(hover_click_dd, "value"),
 )
 def update_structure(
-    hover_data: dict[str, list[dict[str, Any]]],
+    # hover_data: dict[str, list[dict[str, Any]]],
     click_data: dict[str, list[dict[str, Any]]],  # needed only as callback trigger
-    dropdown_value: str,
+    # dropdown_value: str,
 ) -> tuple[Structure, str]:
     """Update StructureMoleculeComponent with pymatgen structure when user clicks or hovers a
     scatter point.
     """
-    triggered = dash.callback_context.triggered[0]
-    if dropdown_value == "click" and triggered["prop_id"].endswith(".hoverData"):
-        # do nothing if we're in update-on-click mode but callback was triggered by hover event
-        raise dash.exceptions.PreventUpdate
+    # triggered = dash.callback_context.triggered[0]
+    # if dropdown_value == "click" and triggered["prop_id"].endswith(".hoverData"):
+    #     # do nothing if we're in update-on-click mode but callback was triggered by hover event
+    #     raise dash.exceptions.PreventUpdate
 
     # hover_data and click_data are identical since a hover event always precedes a click so
     # we always use hover_data
-    data = hover_data["points"][0]
+    data = click_data["points"][0]
 
     # Get the row index of the material in the dataframe
     curve_number = data.get("curveNumber", 0)
