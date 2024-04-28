@@ -2253,12 +2253,22 @@ packages:
   name: jmp-homepage
   version: 0.1.0
   path: .
-  sha256: a6f5ef3374af2b534c564cbc64f85f8bd5b5289b11d65bfccec2004695b99e17
+  sha256: 3be98ec1005522ba65183c9ae1648fc3e3337275cec8a07b03dc4645326a36b6
   requires_dist:
   - crystal-toolkit
   - ipykernel
   - ipywidgets
   - nglview
+  - plotly
+  - numpy
+  - dash
+  - pymatgen
+  - seaborn
+  - matplotlib
+  - pandas
+  - vtk
+  - ase
+  - gunicorn
   requires_python: ==3.11.9
   editable: true
 - kind: conda

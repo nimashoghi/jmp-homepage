@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from typing import TYPE_CHECKING, Any
 
 import crystal_toolkit.components as ctc
@@ -27,7 +28,7 @@ Run this app with:
 """
 
 
-df = pd.read_pickle("/workspaces/fm/fm/notebooks/webpage/df.pkl")
+df = pd.read_pickle(os.environ["INPUT_FILE"])
 # print(df)
 
 plot_labels = {
@@ -205,4 +206,4 @@ def update_structure(
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=8050)
+    app.run(host="0.0.0.0", port=5000, debug=True)

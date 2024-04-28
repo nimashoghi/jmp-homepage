@@ -1,20 +1,17 @@
-FROM ubuntu:latest
+FROM python:3.11
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install dependencies
-RUN apt-get update && apt-get install -y curl
-
-# Install pixi
-RUN curl -fsSL https://pixi.sh/install.sh | bash
-
 # Copy over the current dependencies and install them
-COPY pyproject.toml ./
-COPY pixi.lock ./
-RUN /root/.pixi/bin/pixi install
+RUN pip install crystal-toolkit ipykernel ipywidgets nglview plotly numpy dash pymatgen seaborn matplotlib pandas vtk ase gunicorn
 
 # Copy over the rest of the files
 COPY . .
 
+# Install the current package as editable
+RUN pip install -e .
+
+ENV INPUT_FILE=./df.pkl
+
 # Run the application
-CMD /root/.pixi/bin/pixi run python -m jmphome.tsne
+CMD gunicorn --bind 0.0.0.0:80 --workers=4 wsgi
