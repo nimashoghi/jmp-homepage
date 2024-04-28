@@ -29,7 +29,6 @@ Run this app with:
 
 
 df = pd.read_pickle(os.environ["INPUT_FILE"])
-# print(df)
 
 plot_labels = {
     "dataset_name": "Dataset",
@@ -52,10 +51,6 @@ fig_tsne.update_layout(
     margin=dict(b=20, l=40, r=20, t=100),
 )
 
-# turn off native plotly.js hover effects - make sure to use
-# hoverinfo="none" rather than "skip" which also halts events.
-fig_tsne.update_traces(hoverinfo="none", hovertemplate=None)
-
 
 structure_component = ctc.StructureMoleculeComponent(
     id="structure",
@@ -71,7 +66,6 @@ graph = dcc.Graph(
     id="tsne-scatter-plot",
     figure=fig_tsne,
     style={"width": "90vh"},
-    clear_on_unhover=True,
 )
 # hover_click_dd = dcc.Dropdown(
 #     id="hover-click-dropdown",
@@ -105,20 +99,10 @@ graph_structure_div = html.Div(
 # table = get_data_table(
 #     df.drop(columns="structure").reset_index(), id="data-table", virtualized=False
 # )
-
-hover_structure_component = ctc.StructureMoleculeComponent(
-    id="structure",
-    bonded_sites_outside_unit_cell=True,
-    hide_incomplete_bonds=False,
-    scene_settings=dict(
-        unit_cell=False,
-    ),
-)
 app.layout = html.Div(
     [
         # hover_click_dropdown,
         graph_structure_div,
-        dcc.Tooltip([hover_structure_component.layout()], id="graph-tooltip"),
     ],
     style=dict(margin="2em", padding="1em"),
 )
@@ -126,39 +110,8 @@ ctc.register_crystal_toolkit(app=app, layout=app.layout)
 
 
 @app.callback(
-    Output("graph-tooltip", "show"),
-    Output("graph-tooltip", "bbox"),
-    Output(hover_structure_component.id(), "data"),
-    # Output("graph-tooltip", "children"),
-    Input(graph, "hoverData"),
-)
-def display_hover(hover_data):
-    if hover_data is None:
-        raise dash.exceptions.PreventUpdate
-
-    # hover_data and click_data are identical since a hover event always precedes a click so
-    # we always use hover_data
-    data = hover_data["points"][0]
-    bbox = data["bbox"]
-
-    # Get the row index of the material in the dataframe
-    curve_number = data.get("curveNumber", 0)
-    # Use the curve number as the index of the dataset
-    unique_dataset_list = list(df["dataset_name"].unique())
-    df_filtered = df[df["dataset_name"] == unique_dataset_list[curve_number]]
-
-    # Now, get the corresponding row
-    point_idx = data.get("pointIndex", 0)
-    row = df_filtered.iloc[point_idx]
-
-    # return True, bbox, children
-    return True, bbox, row.structure
-
-
-@app.callback(
     Output(structure_component.id(), "data"),
     Output(struct_title, "children"),
-    # Output("graph-tooltip", "children"),
     # Output(table, "style_data_conditional"),
     # Input(graph, "hoverData"),
     Input(graph, "clickData"),
