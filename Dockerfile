@@ -2,9 +2,6 @@ FROM python:3.11
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Set directory
-WORKDIR ${LAMBDA_TASK_ROOT}
-
 # Copy over the current dependencies and install them
 RUN pip install pandas pymatgen dash crystal-toolkit gunicorn
 
@@ -17,4 +14,4 @@ RUN pip install --no-deps -e .
 ENV INPUT_FILE=./df.pkl
 
 # Run the application
-CMD gunicorn --bind 0.0.0.0:80 --workers=4 wsgi
+CMD gunicorn --bind 0.0.0.0:$PORT --workers=4 wsgi

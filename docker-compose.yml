@@ -1,0 +1,5 @@
+services:
+  api:
+    image: nimashoghi/jmphome:latest
+    ports:
+      - 80:80
