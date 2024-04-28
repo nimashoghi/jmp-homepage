@@ -18,17 +18,7 @@ if TYPE_CHECKING:
 pio.templates.default = "plotly_white"
 
 
-__author__ = "Your Name"
-__date__ = "2023-06-09"
-__email__ = "your.email@example.com"
-
-"""
-Run this app with:
-    python script_name.py
-"""
-
-
-df = pd.read_pickle(os.environ["INPUT_FILE"])
+df = pd.read_pickle(os.environ.get("INPUT_FILE", "./df.pkl"))
 
 plot_labels = {
     "dataset_name": "Dataset",
@@ -100,10 +90,7 @@ graph_structure_div = html.Div(
 #     df.drop(columns="structure").reset_index(), id="data-table", virtualized=False
 # )
 app.layout = html.Div(
-    [
-        # hover_click_dropdown,
-        graph_structure_div,
-    ],
+    [graph_structure_div],
     style=dict(margin="2em", padding="1em"),
 )
 ctc.register_crystal_toolkit(app=app, layout=app.layout)
@@ -159,4 +146,4 @@ def update_structure(
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=False)
