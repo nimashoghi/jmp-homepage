@@ -30,10 +30,13 @@ def convert(
 
     # Hide the unit cell if requested.
     if not show_unit_cell:
-        cell_vis = pipeline.source.data.cell.vis
-        cell_vis.line_width = 1.3
-        cell_vis.enabled = False
-        cell_vis.rendering_color = (0.0, 0.1, 0.0)
+        try:
+            cell_vis = pipeline.source.data.cell.vis
+            cell_vis.line_width = 1.3
+            cell_vis.enabled = False
+            cell_vis.rendering_color = (0.0, 0.1, 0.0)
+        except:
+            pass
 
     # Render the image and save it to the output directory.
     vp = Viewport(type=Viewport.Type.Ortho, camera_dir=(2, 1, -1))

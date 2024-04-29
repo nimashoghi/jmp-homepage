@@ -15,47 +15,74 @@ from dash.dependencies import Input, Output
 if TYPE_CHECKING:
     from pymatgen.core import Structure
 
-pio.templates.default = "plotly_white"
+pio.templates.default = "presentation"
 
-
-df = pd.read_pickle(os.environ.get("INPUT_FILE", "./df.pkl"))
+df = pd.read_pickle(os.environ.get("INPUT_FILE", "./df_small.pkl"))
 
 plot_labels = {
     "dataset_name": "Dataset",
     "subset": "Subset",
 }
 
-fig_tsne = px.scatter(
+fig = px.scatter(
     df,
-    x="x",
-    y="y",
+    x="2d_x",
+    y="2d_y",
     color="dataset_name",
     labels=plot_labels,
     hover_name="dataset_full_name",
     hover_data=["subset", "description", "url"],
 )
 title = "t-SNE of JMP Embeddings"
-fig_tsne.update_layout(
+fig.update_layout(
     title=dict(text=f"<b>{title}</b>", x=0.5, font_size=20),
-    legend=dict(x=1, y=1, xanchor="right"),
+    # legend=dict(
+    #     orientation="h",
+    #     yanchor="bottom",
+    #     y=1.02,
+    #     xanchor="right",
+    #     x=1,
+    # ),
     margin=dict(b=20, l=40, r=20, t=100),
 )
+fig.update_layout(showlegend=True)
+
+fig.update_xaxes(title_text="", showticklabels=False)
+fig.update_yaxes(title_text="", showticklabels=False)
+
+# Hide the gridlines
+fig.update_xaxes(showgrid=False)
+fig.update_yaxes(showgrid=False)
 
 
-structure_component = ctc.StructureMoleculeComponent(
-    id="structure",
-    bonded_sites_outside_unit_cell=True,
-    hide_incomplete_bonds=False,
-    scene_settings=dict(
-        unit_cell=False,
-    ),
-)
-
-app = dash.Dash(prevent_initial_callbacks=True, assets_folder=SETTINGS.ASSETS_PATH)
+structure_component = ctc.StructureMoleculeComponent(id="structure")
+app = dash.Dash(prevent_initial_callbacks=True)
+app.index_string = """
+<!DOCTYPE html>
+<html>
+    <head>
+        {%metas%}
+        <title>{%title%}</title>
+        {%favicon%}
+        {%css%}
+    </head>
+    <body style="background-color: white !important;">
+        <!--[if IE]><script>
+        alert("Dash v2.7+ does not support Internet Explorer. Please use a newer browser.");
+        </script><![endif]-->
+        {%app_entry%}
+        <footer>
+            {%config%}
+            {%scripts%}
+            {%renderer%}
+        </footer>
+    </body>
+</html>
+"""
 graph = dcc.Graph(
     id="tsne-scatter-plot",
-    figure=fig_tsne,
-    style={"width": "90vh"},
+    figure=fig,
+    # style={"width": "90vh"},
 )
 # hover_click_dd = dcc.Dropdown(
 #     id="hover-click-dropdown",
@@ -91,7 +118,11 @@ graph_structure_div = html.Div(
 # )
 app.layout = html.Div(
     [graph_structure_div],
-    style=dict(margin="2em", padding="1em"),
+    # style=dict(margin="2em", padding="1em",),
+    style={
+        "margin": "2em",
+        "padding": "1em",
+    },
 )
 ctc.register_crystal_toolkit(app=app, layout=app.layout)
 
