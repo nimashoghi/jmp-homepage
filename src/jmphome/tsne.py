@@ -8,7 +8,6 @@ import dash
 import pandas as pd
 import plotly.express as px
 import plotly.io as pio
-from crystal_toolkit.settings import SETTINGS
 from dash import dcc, html
 from dash.dependencies import Input, Output
 
@@ -23,12 +22,27 @@ plot_labels = {
     "dataset_name": "Dataset",
     "subset": "Subset",
 }
-
+dataset_colors: dict[str, str] = {
+    "QM9": "#8dd3c7",
+    "MD17": "#bebada",
+    "MD22": "#b3de69",
+    "SPICE": "#fb8072",
+    "Matbench": "#80b1d3",
+    "QMOF": "#fdb462",
+}
+dataset_colors_pt = {
+    "OC20": "#bc80bd",
+    "OC22": "#994c00",
+    "ANI1x": "#d9d9d9",
+    "Transition1x": "#fccde5",
+}
+colors = {**dataset_colors, **dataset_colors_pt}
 fig = px.scatter(
     df,
     x="2d_x",
     y="2d_y",
     color="dataset_name",
+    color_discrete_map=colors,
     labels=plot_labels,
     hover_name="dataset_full_name",
     hover_data=["subset", "description", "url"],
