@@ -3,7 +3,7 @@ FROM python:3.10
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Copy over the current dependencies and install them
-RUN pip install pandas pymatgen dash crystal-toolkit gunicorn
+RUN pip install pandas pymatgen dash crystal-toolkit dash-bootstrap-components gunicorn
 
 # Copy over the rest of the files
 COPY . .

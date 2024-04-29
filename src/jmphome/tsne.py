@@ -1,7 +1,5 @@
-from __future__ import annotations
-
 import os
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
 import crystal_toolkit.components as ctc
 import dash
@@ -11,9 +9,7 @@ import plotly.express as px
 import plotly.io as pio
 from dash import dcc, html
 from dash.dependencies import Input, Output
-
-if TYPE_CHECKING:
-    from pymatgen.core import Structure
+from pymatgen.core import Structure
 
 pio.templates.default = "presentation"
 
@@ -125,8 +121,8 @@ struct_title = html.H2(
 )
 app.layout = dbc.Row(
     [
-        dbc.Col([graph], lg=6, md=12),
-        dbc.Col([struct_title, structure_component.layout(size="100%")], lg=6, md=12),
+        dbc.Col([graph], md=6, sm=12),
+        dbc.Col([struct_title, structure_component.layout(size="100%")], md=6, sm=12),
     ],
     # style=dict(display="flex", gap="2em", margin="2em 0"),
 )
@@ -186,4 +182,4 @@ def update_structure(
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=False)

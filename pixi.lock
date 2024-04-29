@@ -40,8 +40,8 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/b1/fe/e8c672695b37eecc5cbf43e1d0638d88d66ba3a44c4d321c796f4e59167f/beautifulsoup4-4.12.3-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/ea/63/da7237f805089ecc28a3f36bca6a21c31fcbc2eb380f3b8f1be3312abd14/bleach-6.1.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/b8/a8/e2c40dc86dfc88fea7b627123e0a8e33ad1978af1f521629ec0f9a6e5da8/blinker-1.8.1-py3-none-any.whl
-      - pypi: https://files.pythonhosted.org/packages/8f/73/a697d4cae44f5358c457b5de3ba1cf1374778a87bbd49a43e39be79b7249/boto3-1.34.93-py3-none-any.whl
-      - pypi: https://files.pythonhosted.org/packages/eb/c3/c47c39c4c85691fc10ae16e1647c1d853d54f8fcd95f28362dc0d7472029/botocore-1.34.93-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/9f/3b/5a7a68db7cf2ce25d12224cd73e4aa710fb2d5e938ed455da55705ea5531/boto3-1.34.94-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/50/34/c62651efcdec654a1be4f7b6c70b5ae816bd15a4938f524af040722dd95d/botocore-1.34.94-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/93/70/58e525451478055b0fd2859b22226888a6985d404fe65e014fc4893d3b75/cachelib-0.9.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/ba/06/a07f096c664aeb9f01624f858c3add0a4e913d6c96257acb4fce61e7de14/certifi-2024.2.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/c9/7c/43d81bdd5a915923c3bad5bb4bff401ea00ccc8e28433fb6083d2e3bf58e/cffi-1.16.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
@@ -70,6 +70,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/9c/b9/79691036d4a8f9857e74d1728b23f34f583b81350a27492edda58d5604e1/fastjsonschema-2.19.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/61/80/ffe1da13ad9300f87c93af113edd0638c75138c42a0994becfacac078c06/flask-3.0.3-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/2b/d2/dabe1aa77855713ef3b2a0095f2f35c0383100b776bce1f6b036ddd1863b/Flask_Caching-2.2.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/10/69/1e6cfb87117568a9de088c32d6258219e9d1ff7c131abf74249ef2031279/Flask_Cors-4.0.0-py2.py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/67/09/e09ee013d9d6f2f006147e5fc2b4d807eb2931f4f890c2d4f711e10391d7/fonttools-4.51.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/cf/58/8acf1b3e91c58313ce5cb67df61001fc9dcd21be4fadb76c1a2d540e09ed/fqdn-1.5.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/3a/db/72e99b83e3fc855edf2825a7082dfe3ca0cb68c1e7541f33be0c879c1641/frozendict-2.4.2-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
@@ -462,20 +463,20 @@ packages:
   requires_python: '>=3.8'
 - kind: pypi
   name: boto3
-  version: 1.34.93
-  url: https://files.pythonhosted.org/packages/8f/73/a697d4cae44f5358c457b5de3ba1cf1374778a87bbd49a43e39be79b7249/boto3-1.34.93-py3-none-any.whl
-  sha256: b59355bf4a1408563969526f314611dbeacc151cf90ecb22af295dcc4fe18def
+  version: 1.34.94
+  url: https://files.pythonhosted.org/packages/9f/3b/5a7a68db7cf2ce25d12224cd73e4aa710fb2d5e938ed455da55705ea5531/boto3-1.34.94-py3-none-any.whl
+  sha256: bbb87d641c73462e53b1777083b55c8f13921618ad08757478a8122985c56c13
   requires_dist:
-  - botocore<1.35.0,>=1.34.93
+  - botocore<1.35.0,>=1.34.94
   - jmespath<2.0.0,>=0.7.1
   - s3transfer<0.11.0,>=0.10.0
   - botocore[crt]<2.0a0,>=1.21.0 ; extra == 'crt'
   requires_python: '>=3.8'
 - kind: pypi
   name: botocore
-  version: 1.34.93
-  url: https://files.pythonhosted.org/packages/eb/c3/c47c39c4c85691fc10ae16e1647c1d853d54f8fcd95f28362dc0d7472029/botocore-1.34.93-py3-none-any.whl
-  sha256: 6fbd5a53a2adc9b3d4ebd90ae0ede83a91a41d96231f8a5984051f75495f246d
+  version: 1.34.94
+  url: https://files.pythonhosted.org/packages/50/34/c62651efcdec654a1be4f7b6c70b5ae816bd15a4938f524af040722dd95d/botocore-1.34.94-py3-none-any.whl
+  sha256: f00a79002e0cb9d6895ecd0919c506402850177d7b6c4d2634fa2da362d95bcb
   requires_dist:
   - jmespath<2.0.0,>=0.7.1
   - python-dateutil<3.0.0,>=2.1
@@ -922,6 +923,13 @@ packages:
   - cachelib<0.10.0,>=0.9.0
   - flask
   requires_python: '>=3.8'
+- kind: pypi
+  name: flask-cors
+  version: 4.0.0
+  url: https://files.pythonhosted.org/packages/10/69/1e6cfb87117568a9de088c32d6258219e9d1ff7c131abf74249ef2031279/Flask_Cors-4.0.0-py2.py3-none-any.whl
+  sha256: bc3492bfd6368d27cfe79c7821df5a8a319e1a6d5eab277a3794be19bdc51783
+  requires_dist:
+  - flask>=0.9
 - kind: pypi
   name: fonttools
   version: 4.51.0

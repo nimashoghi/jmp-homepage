@@ -17,7 +17,7 @@ dependencies = [
     "matplotlib",
     "pandas",
     "gunicorn",
-    "ovito", "dash-bootstrap-components",
+    "ovito", "dash-bootstrap-components", "flask-cors",
 ]
 
 [build-system]
