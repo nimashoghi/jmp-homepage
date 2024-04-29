@@ -54,6 +54,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/57/be/6a7a1c209e164772bfb3a86a91a83fe04a2750204a6e4be5520c6f3beb74/crystaltoolkit-extension-0.6.0.tar.gz
       - pypi: https://files.pythonhosted.org/packages/e7/05/c19819d5e3d95294a6f5947fb9b9629efb316b96de511b418c53d245aae6/cycler-0.12.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/b0/68/781d0026a100106b64e4501c76621dfcd0d3c29a546094fcffaa73037a74/dash-2.16.1-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/cc/72/dda12d6c6a9a2901f5549cea05c7f180e89dee6fb8c5f5f037ce7101ba24/dash_bootstrap_components-1.6.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/00/9e/a29f726e84e531a36d56cff187e61d8c96d2cc253c5bcef9a7695acb7e6a/dash_core_components-2.0.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/75/65/1b16b853844ef59b2742a7de74a598f376ac0ab581f0dcc34db294e5c90e/dash_html_components-2.0.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/4a/f4/02c0253544b1073e4d566500a89e3df96543f30f036a1b1ac7dda176c360/dash_mp_components-0.4.45.tar.gz
@@ -120,7 +121,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/d9/96/a1868dd8997d65732476dfc70fef44d046c1b4dbe36ec1481ab744d87775/msgpack-1.0.8-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/84/ae/eaa71c0ed64e8ddc426a4c902e83d31c4925e9d3418d6b240dd5752b6e71/nbclassic-1.0.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/66/e8/00517a23d3eeaed0513e718fbc94aab26eaa1758f5690fc8578839791c79/nbclient-0.10.0-py3-none-any.whl
-      - pypi: https://files.pythonhosted.org/packages/23/8a/8d67cbd984739247e4b205c1143e2f71b25b4f71e180fe70f7cb2cf02633/nbconvert-7.16.3-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/b8/bb/bb5b6a515d1584aa2fd89965b11db6632e4bdc69495a52374bcc36e56cfa/nbconvert-7.16.4-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/a9/82/0340caa499416c78e5d8f5f05947ae4bc3cba53c9f038ab6e9ed964e22f1/nbformat-5.10.4-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/a0/c4/c2971a3ba4c6103a3d10c4b0f24f461ddc027f0f09763220cf35ca1401b3/nest_asyncio-1.6.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/38/e9/5f72929373e1a0e8d142a130f3f97e6ff920070f87f91c4e13e40e0fba5a/networkx-3.3-py3-none-any.whl
@@ -194,7 +195,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/40/44/4a5f08c96eb108af5cb50b41f76142f0afa346dfa99d5296fe7202a11854/tabulate-0.9.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/f4/f1/990741d5bb2487d529d20a433210ffa136a367751e454214013b441c4575/tenacity-8.2.3-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/6a/9e/2064975477fdc887e47ad42157e214526dcad8f317a948dee17e1659a62f/terminado-0.18.1-py3-none-any.whl
-      - pypi: https://files.pythonhosted.org/packages/1e/84/ccd9b08653022b7785b6e3ee070ffb2825841e0dc119be22f0840b2b35cb/threadpoolctl-3.4.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/4b/2c/ffbf7a134b9ab11a67b0cf0726453cedd9c5043a4fe7a35d1cefa9a1bcfb/threadpoolctl-3.5.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/88/23/6398b7bca8967c853b90ba2f8da5e3ad1e9b2ca5b9f869a8c26ea41543e2/tifffile-2024.4.24-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/2c/4d/0db5b8a613d2a59bbc29bc5bb44a2f8070eb9ceab11c50d477502a8a0092/tinycss2-1.3.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/97/75/10a9ebee3fd790d20926a90a2547f0bf78f371b2f13aa822c759680ca7b9/tomli-2.0.1-py3-none-any.whl
@@ -725,6 +726,16 @@ packages:
   - dash-testing-stub>=0.0.2 ; extra == 'testing'
   - cryptography<3.4 ; python_version < '3.7' and extra == 'testing'
   requires_python: '>=3.8'
+- kind: pypi
+  name: dash-bootstrap-components
+  version: 1.6.0
+  url: https://files.pythonhosted.org/packages/cc/72/dda12d6c6a9a2901f5549cea05c7f180e89dee6fb8c5f5f037ce7101ba24/dash_bootstrap_components-1.6.0-py3-none-any.whl
+  sha256: 97f0f47b38363f18863e1b247462229266ce12e1e171cfb34d3c9898e6e5cd1e
+  requires_dist:
+  - dash>=2.0.0
+  - numpy ; extra == 'pandas'
+  - pandas ; extra == 'pandas'
+  requires_python: '>=3.8,<4'
 - kind: pypi
   name: dash-core-components
   version: 2.0.0
@@ -1275,7 +1286,7 @@ packages:
   name: jmp-homepage
   version: 0.1.0
   path: .
-  sha256: 05a22a47e1071d7ffa536c062c905e1576c7b44c152b5fac20a840055a191625
+  sha256: 43b1996c216db9e9de2a9db445f50b938303c93780b9890fd5829bc53091fb4b
   requires_dist:
   - crystal-toolkit
   - ipykernel
@@ -1290,6 +1301,7 @@ packages:
   - pandas
   - gunicorn
   - ovito
+  - dash-bootstrap-components
   requires_python: ==3.10.14
   editable: true
 - kind: pypi
@@ -2040,9 +2052,9 @@ packages:
   requires_python: '>=3.8.0'
 - kind: pypi
   name: nbconvert
-  version: 7.16.3
-  url: https://files.pythonhosted.org/packages/23/8a/8d67cbd984739247e4b205c1143e2f71b25b4f71e180fe70f7cb2cf02633/nbconvert-7.16.3-py3-none-any.whl
-  sha256: ddeff14beeeedf3dd0bc506623e41e4507e551736de59df69a91f86700292b3b
+  version: 7.16.4
+  url: https://files.pythonhosted.org/packages/b8/bb/bb5b6a515d1584aa2fd89965b11db6632e4bdc69495a52374bcc36e56cfa/nbconvert-7.16.4-py3-none-any.whl
+  sha256: 05873c620fe520b6322bf8a5ad562692343fe3452abda5765c7a34b7d1aa3eb3
   requires_dist:
   - beautifulsoup4
   - bleach!=5.0.0
@@ -2060,7 +2072,19 @@ packages:
   - pygments>=2.4.1
   - tinycss2
   - traitlets>=5.1
-  - nbconvert[docs,qtpdf,serve,test,webpdf] ; extra == 'all'
+  - flaky ; extra == 'all'
+  - ipykernel ; extra == 'all'
+  - ipython ; extra == 'all'
+  - ipywidgets>=7.5 ; extra == 'all'
+  - myst-parser ; extra == 'all'
+  - nbsphinx>=0.2.12 ; extra == 'all'
+  - playwright ; extra == 'all'
+  - pydata-sphinx-theme ; extra == 'all'
+  - pyqtwebengine>=5.15 ; extra == 'all'
+  - pytest>=7 ; extra == 'all'
+  - sphinx==5.0.2 ; extra == 'all'
+  - sphinxcontrib-spelling ; extra == 'all'
+  - tornado>=6.1 ; extra == 'all'
   - ipykernel ; extra == 'docs'
   - ipython ; extra == 'docs'
   - myst-parser ; extra == 'docs'
@@ -2068,7 +2092,7 @@ packages:
   - pydata-sphinx-theme ; extra == 'docs'
   - sphinx==5.0.2 ; extra == 'docs'
   - sphinxcontrib-spelling ; extra == 'docs'
-  - nbconvert[qtpng] ; extra == 'qtpdf'
+  - pyqtwebengine>=5.15 ; extra == 'qtpdf'
   - pyqtwebengine>=5.15 ; extra == 'qtpng'
   - tornado>=6.1 ; extra == 'serve'
   - flaky ; extra == 'test'
@@ -3284,9 +3308,9 @@ packages:
   requires_python: '>=3.8'
 - kind: pypi
   name: threadpoolctl
-  version: 3.4.0
-  url: https://files.pythonhosted.org/packages/1e/84/ccd9b08653022b7785b6e3ee070ffb2825841e0dc119be22f0840b2b35cb/threadpoolctl-3.4.0-py3-none-any.whl
-  sha256: 8f4c689a65b23e5ed825c8436a92b818aac005e0f3715f6a1664d7c7ee29d262
+  version: 3.5.0
+  url: https://files.pythonhosted.org/packages/4b/2c/ffbf7a134b9ab11a67b0cf0726453cedd9c5043a4fe7a35d1cefa9a1bcfb/threadpoolctl-3.5.0-py3-none-any.whl
+  sha256: 56c1e26c150397e58c4926da8eeee87533b1e32bef131bd4bf6a2f45f3185467
   requires_python: '>=3.8'
 - kind: pypi
   name: tifffile

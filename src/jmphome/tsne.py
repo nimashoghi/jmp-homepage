@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING, Any
 
 import crystal_toolkit.components as ctc
 import dash
+import dash_bootstrap_components as dbc
 import pandas as pd
 import plotly.express as px
 import plotly.io as pio
@@ -70,7 +71,9 @@ fig.update_yaxes(showgrid=False)
 
 
 structure_component = ctc.StructureMoleculeComponent(id="structure")
-app = dash.Dash(prevent_initial_callbacks=True)
+app = dash.Dash(
+    prevent_initial_callbacks=True, external_stylesheets=[dbc.themes.BOOTSTRAP]
+)
 app.index_string = """
 <!DOCTYPE html>
 <html>
@@ -96,7 +99,7 @@ app.index_string = """
 graph = dcc.Graph(
     id="tsne-scatter-plot",
     figure=fig,
-    # style={"width": "90vh"},
+    style={"width": "100%"},
 )
 # hover_click_dd = dcc.Dropdown(
 #     id="hover-click-dropdown",
@@ -120,24 +123,16 @@ struct_title = html.H2(
     id="struct-title",
     style=dict(position="absolute", padding="1ex 1em", maxWidth="25em"),
 )
-graph_structure_div = html.Div(
+app.layout = dbc.Row(
     [
-        graph,
-        html.Div([struct_title, structure_component.layout()]),
+        dbc.Col([graph], lg=6, md=12),
+        dbc.Col([struct_title, structure_component.layout(size="100%")], lg=6, md=12),
     ],
-    style=dict(display="flex", gap="2em", margin="2em 0"),
+    # style=dict(display="flex", gap="2em", margin="2em 0"),
 )
 # table = get_data_table(
 #     df.drop(columns="structure").reset_index(), id="data-table", virtualized=False
 # )
-app.layout = html.Div(
-    [graph_structure_div],
-    # style=dict(margin="2em", padding="1em",),
-    style={
-        "margin": "2em",
-        "padding": "1em",
-    },
-)
 ctc.register_crystal_toolkit(app=app, layout=app.layout)
 
 
@@ -191,4 +186,4 @@ def update_structure(
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=False)
+    app.run(host="0.0.0.0", port=5000, debug=True)
