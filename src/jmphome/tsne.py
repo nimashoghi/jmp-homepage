@@ -65,7 +65,11 @@ largest_structure_idx_relative_to_qmof = 66
 largest_structure_row = df.iloc[largest_structure_idx]
 
 SELECTED_DICT = {
-    "marker": {"size": 20, "color": "#010101", "opacity": 0.95},
+    "marker": {
+        "color": "red",
+        "size": 8,
+        "opacity": 0.95,
+    },
 }
 
 
