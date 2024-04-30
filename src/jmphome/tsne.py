@@ -66,11 +66,16 @@ fig.update_xaxes(showgrid=False)
 fig.update_yaxes(showgrid=False)
 
 
+benzene = df[df["dataset"] == "md17.benzene"].iloc[-1]["structure"]
+largest_structure = df.iloc[2680]["structure"]
+
 structure_component = ctc.StructureMoleculeComponent(
+    largest_structure,
     id="structure",
 )
 app = dash.Dash(
-    prevent_initial_callbacks=True, external_stylesheets=[dbc.themes.BOOTSTRAP]
+    # prevent_initial_callbacks=True,
+    external_stylesheets=[dbc.themes.BOOTSTRAP],
 )
 app.index_string = """
 <!DOCTYPE html>
@@ -154,6 +159,13 @@ def update_structure(
     # if dropdown_value == "click" and triggered["prop_id"].endswith(".hoverData"):
     #     # do nothing if we're in update-on-click mode but callback was triggered by hover event
     #     raise dash.exceptions.PreventUpdate
+
+    if (
+        click_data is None
+        or (points := click_data.get("points")) is None
+        or len(points) == 0
+    ):
+        raise dash.exceptions.PreventUpdate
 
     # hover_data and click_data are identical since a hover event always precedes a click so
     # we always use hover_data
