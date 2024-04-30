@@ -8,7 +8,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.io as pio
 from dash import dcc, html
-from dash.dependencies import Input, Output
+from dash.dependencies import Input, Output, State
 from pymatgen.core import Structure
 
 pio.templates.default = "presentation"
@@ -47,13 +47,6 @@ fig = px.scatter(
 title = "t-SNE of JMP Embeddings"
 fig.update_layout(
     title=dict(text=f"<b>{title}</b>", x=0.5, font_size=20),
-    # legend=dict(
-    #     orientation="h",
-    #     yanchor="bottom",
-    #     y=1.02,
-    #     xanchor="right",
-    #     x=1,
-    # ),
     margin=dict(b=20, l=40, r=20, t=100),
 )
 fig.update_layout(showlegend=True)
@@ -67,14 +60,39 @@ fig.update_yaxes(showgrid=False)
 
 
 benzene = df[df["dataset"] == "md17.benzene"].iloc[-1]["structure"]
-largest_structure = df.iloc[2680]["structure"]
+largest_structure_idx = 2680
+largest_structure_idx_relative_to_qmof = 66
+largest_structure_row = df.iloc[largest_structure_idx]
+
+SELECTED_DICT = {
+    "marker": {"size": 20, "color": "#010101", "opacity": 0.95},
+}
+
+
+def update_fig_for_initial():
+    new_data_list = []
+    for data in fig.data:
+        if data.name != largest_structure_row["dataset_name"]:
+            new_data_list.append(data)
+            continue
+        new_data_list.append(
+            data.update(
+                {
+                    "selected": SELECTED_DICT,
+                    "selectedpoints": [largest_structure_idx_relative_to_qmof],
+                }
+            )
+        )
+    fig.data = tuple(new_data_list)
+
+
+update_fig_for_initial()
 
 structure_component = ctc.StructureMoleculeComponent(
-    largest_structure,
+    largest_structure_row.structure,
     id="structure",
 )
 app = dash.Dash(
-    # prevent_initial_callbacks=True,
     external_stylesheets=[dbc.themes.BOOTSTRAP],
 )
 app.index_string = """
@@ -104,23 +122,6 @@ graph = dcc.Graph(
     figure=fig,
     style={"width": "100%"},
 )
-# hover_click_dd = dcc.Dropdown(
-#     id="hover-click-dropdown",
-#     options=["hover", "click"],
-#     value="hover",
-#     clearable=False,
-#     style=dict(minWidth="5em"),
-# )
-# hover_click_dropdown = html.Div(
-#     [html.Label("Update structure on:", style=dict(fontWeight="bold")), hover_click_dd],
-#     style=dict(
-#         display="flex",
-#         placeContent="center",
-#         placeItems="center",
-#         gap="1em",
-#         margin="1em",
-#     ),
-# )
 struct_title = html.H2(
     "Try clicking on a point in the plot to see its corresponding structure here",
     id="struct-title",
@@ -131,35 +132,21 @@ app.layout = dbc.Row(
         dbc.Col([graph], md=6, sm=12),
         dbc.Col([struct_title, structure_component.layout(size="100%")], md=6, sm=12),
     ],
-    # style=dict(display="flex", gap="2em", margin="2em 0"),
 )
-# table = get_data_table(
-#     df.drop(columns="structure").reset_index(), id="data-table", virtualized=False
-# )
 ctc.register_crystal_toolkit(app=app, layout=app.layout)
 
 
 @app.callback(
     Output(structure_component.id(), "data"),
     Output(struct_title, "children"),
-    # Output(table, "style_data_conditional"),
-    # Input(graph, "hoverData"),
+    Output(graph, "figure"),
     Input(graph, "clickData"),
-    # State(hover_click_dd, "value"),
+    State(graph, "figure"),
 )
 def update_structure(
-    # hover_data: dict[str, list[dict[str, Any]]],
-    click_data: dict[str, list[dict[str, Any]]],  # needed only as callback trigger
-    # dropdown_value: str,
-) -> tuple[Structure, str]:
-    """Update StructureMoleculeComponent with pymatgen structure when user clicks or hovers a
-    scatter point.
-    """
-    # triggered = dash.callback_context.triggered[0]
-    # if dropdown_value == "click" and triggered["prop_id"].endswith(".hoverData"):
-    #     # do nothing if we're in update-on-click mode but callback was triggered by hover event
-    #     raise dash.exceptions.PreventUpdate
-
+    click_data: dict[str, list[dict[str, Any]]],
+    current_fig: dict,
+) -> tuple[Structure, str, dict]:
     if (
         click_data is None
         or (points := click_data.get("points")) is None
@@ -167,32 +154,30 @@ def update_structure(
     ):
         raise dash.exceptions.PreventUpdate
 
-    # hover_data and click_data are identical since a hover event always precedes a click so
-    # we always use hover_data
     data = click_data["points"][0]
 
-    # Get the row index of the material in the dataframe
     curve_number = data.get("curveNumber", 0)
-    # Use the curve number as the index of the dataset
     unique_dataset_list = list(df["dataset_name"].unique())
     df_filtered = df[df["dataset_name"] == unique_dataset_list[curve_number]]
 
-    # Now, get the corresponding row
     point_idx = data.get("pointIndex", 0)
     row = df_filtered.iloc[point_idx]
 
     structure = row.structure
     dataset = row.dataset_full_name
-    # print(material_id, dataset, hover_data)
 
-    # # highlight corresponding row in table
-    # style_data_conditional = {
-    #     "if": {"row_index": material_id},
-    #     "backgroundColor": "#3D9970",
-    #     "color": "white",
-    # }
+    # Update the style of the selected point in the t-SNE plot
+    updated_fig = current_fig.copy()
+    selected_point = SELECTED_DICT
+    # Unselect the previous points
+    for data in updated_fig["data"]:
+        data.pop("selectedpoints", None)
+        data.pop("selected", None)
 
-    return structure, dataset
+    updated_fig["data"][curve_number]["selectedpoints"] = [point_idx]
+    updated_fig["data"][curve_number]["selected"] = selected_point
+
+    return structure, dataset, updated_fig
 
 
 if __name__ == "__main__":
