@@ -66,7 +66,9 @@ fig.update_xaxes(showgrid=False)
 fig.update_yaxes(showgrid=False)
 
 
-structure_component = ctc.StructureMoleculeComponent(id="structure")
+structure_component = ctc.StructureMoleculeComponent(
+    id="structure",
+)
 app = dash.Dash(
     prevent_initial_callbacks=True, external_stylesheets=[dbc.themes.BOOTSTRAP]
 )

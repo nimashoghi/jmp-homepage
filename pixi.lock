@@ -1294,7 +1294,7 @@ packages:
   name: jmp-homepage
   version: 0.1.0
   path: .
-  sha256: 43b1996c216db9e9de2a9db445f50b938303c93780b9890fd5829bc53091fb4b
+  sha256: 993df3e724e8e9d8d0afad60cc3b30a772f364684149a736688af9fa26eb5d61
   requires_dist:
   - crystal-toolkit
   - ipykernel
@@ -1310,6 +1310,7 @@ packages:
   - gunicorn
   - ovito
   - dash-bootstrap-components
+  - flask-cors
   requires_python: ==3.10.14
   editable: true
 - kind: pypi
